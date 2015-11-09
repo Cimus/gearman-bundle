@@ -1,0 +1,11 @@
+services:
+    cimus.gearman.client:
+        class: GearmanClient
+        calls:
+            - [ addServers, [%cimus.gearman.servers%] ]
+            
+    cimus.gearman.worker:
+        class: GearmanWorker
+        calls:
+            - [ addServers, [%cimus.gearman.servers%] ]
+        scope: prototype

@@ -1,0 +1,32 @@
+{
+    "name" : "cimus/gearman-bundle",
+    "description" : "Symfony CimusGearmanBundle",
+    "version" : "1.0.0",
+    "type" : "symfony-bundle",
+    "homepage": "https://github.com/Cimus/gearman-bundle",
+    "license" : "MIT",
+    "keywords" : ["gearman", "gearman bundle"],
+    "authors" : [{
+        "name" : "Sergey Ageev (Cimus)",
+        "email" : "s_ageev@mail.ru"
+    }],
+    "require" : {
+        "php": ">=5.6.1",
+        "symfony/framework-bundle": "~2.1",
+        "symfony/symfony": "~2.1",
+        "symfony/console": "~2.1"
+    },
+    "autoload" : {
+        "psr-4" : { "Cimus\\GearmanBundle\\" : "" }
+    },
+    "extra" : {
+        "branch-alias" : {
+            "dev-master" : "1.0.x-dev"
+        }
+    },
+    "minimum-stability": "dev"
+}
+
+
+
+
