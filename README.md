@@ -11,7 +11,7 @@ Gearman Bundle for Symfony2
 ## Установка
 Для работы тербуется [Gearman](http://gearman.org/) и расширение для PHP [PECL gearman](http://pecl.php.net/package/gearman)
 
-Установка через [Composer](http://composer.org/):
+Установка через [Composer](https://getcomposer.org/):
 
 ``` json
 {
