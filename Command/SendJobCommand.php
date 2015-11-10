@@ -35,7 +35,7 @@ class SendJobCommand extends ContainerAwareCommand
         $jobData = $input->getArgument('data');
 
         $gmclient = $this->getContainer()->get('cimus.gearman.client');
-        $gmclient->doBackground($jobName, $jobData);
+        $gmclient->doBackground($jobName, $jobData, crc32($jobData));
 
         $returnCode = $gmclient->returnCode();
         if (GEARMAN_SUCCESS !== $returnCode) {

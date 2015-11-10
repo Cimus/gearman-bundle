@@ -32,6 +32,7 @@ class CimusGearmanExtension extends Extension
         }
         
         $container->setParameter('cimus.gearman.servers', implode(',', $servers));
+        $container->setParameter('cimus.gearman.servers.original', $config['servers']);
         
         
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
