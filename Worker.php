@@ -11,11 +11,18 @@ use Symfony\Component\DependencyInjection\ContainerAware;
  */
 abstract class Worker extends ContainerAware 
 {
+    protected function getWorkload(\GearmanJob $job)
+    {
+        return unserialize($job->workload());
+    }
+    
+    
+    
     /**
-     * @return Doctrine\Bundle\DoctrineBundle\Registry
+     * @return \Doctrine\Bundle\DoctrineBundle\Registry
      * @throws LogicException If DoctrineBundle is not available
      */
-    public function getDoctrine()
+    protected function getDoctrine()
     {
         if (!$this->container->has('doctrine')) {
             throw new LogicException('The DoctrineBundle is not registered in your application.');
@@ -23,11 +30,39 @@ abstract class Worker extends ContainerAware
         return $this->container->get('doctrine');
     }
     
+    
+    
+    /**
+     * 
+     * @param type $counterId
+     * @return \K50\TrackerBundle\Entity\Counter
+     */
+    protected function getCounterById($counterId)
+    {
+        return $this
+                ->getDoctrine()
+                ->getRepository('K50TrackerBundle:Counter')
+                ->findByCounterIdSingle($counterId);
+    }
+    
+    
+    
+    /**
+     * 
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
+    protected function getVertica()
+    {
+        return $this->getDoctrine()->getManager('vertica');
+    }
+
+    
+
     /**
      * @param string $id
      * @return boolean
      */
-    public function has($id)
+    protected function has($id)
     {
         return $this->container->has($id);
     }
@@ -37,9 +72,26 @@ abstract class Worker extends ContainerAware
      * @param string $id
      * @return object
      */
-    public function get($id)
+    protected function get($id)
     {
         return $this->container->get($id);
     }
+    
+    
+    
+    /**
+     * 
+     * @return \Cimus\GearmanBundle\Services\GearmanClient
+     */
+    protected function getGearmanClient()
+    {
+        return $this->getContainer()->get('cimus.gearman');
+    }
+    
+    
+    
+    
+    
+    
     
 }

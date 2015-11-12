@@ -6,7 +6,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputOption;
 use TweeGearmanStat\Queue\Gearman as GearmanTelnetMonitor;
-use \Symfony\Component\Console\Helper\TableHelper;
+use Symfony\Component\Console\Helper\Table;
 
 /**
  * Description of MonitorCommand
@@ -42,7 +42,7 @@ EOF
         $adapter = new GearmanTelnetMonitor($this->getGearmanServers());
         $watch = $input->getOption('watch');
         $once = true;
-        
+        $table = new Table($output);
         while($once || $watch)
         {
             $status = $adapter->status();
@@ -53,9 +53,7 @@ EOF
                 $output->writeln("");
                 if($this->getHelperSet()->has('table'))
                 {
-                    // Symfony 2.3 console goodness
-                    /** @var $table \Symfony\Component\Console\Helper\TableHelper */
-                    $table = $this->getHelperSet()->get('table');
+                    $table = new Table($output);
                     $table
                             ->setHeaders(['Queue', 'Jobs', 'Workers working', 'Workers total'])
                             ->setRows($queues);

@@ -6,6 +6,7 @@ use GearmanWorker;
 use ReflectionClass;
 
 use Cimus\GearmanBundle\Worker;
+use Cimus\GearmanBundle\Exception\RetryException;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -228,7 +229,7 @@ class RunWorkerCommand extends ContainerAwareCommand
                 {
                     if(!$annotation->name) $annotation->name = $method->getName();
                         
-                    $this->registerJob($annotation->name, $method->getName(), $worker, $gmWorker, $output);
+                    $this->registerJob($annotation->name, $method->getName(), $worker, $gmWorker, $output, $annotation);
                 }
             }
         }
@@ -243,20 +244,31 @@ class RunWorkerCommand extends ContainerAwareCommand
      * @param GearmanWorker $gmWorker
      * @param OutputInterface $output
      */
-    private function registerJob($name, $metod, Worker $worker, GearmanWorker $gmWorker, OutputInterface $output)
+    private function registerJob($name, $metod, Worker $worker, GearmanWorker $gmWorker, OutputInterface $output, \Cimus\GearmanBundle\Annotation\Gearman $annotation)
     {
-        $gmWorker->addFunction($name, function (GearmanJob $job) use ($name, $metod, $worker, $output){
+        $gmWorker->addFunction($name, function (GearmanJob $job) use ($name, $metod, $worker, $output, $annotation){
             
             try {
                 $result = call_user_func_array([$worker, $metod ], [$job, $output]);
                 $job->sendComplete($result);
                 return true;
             }
-            catch(\Exception $ex)
+            catch(RetryException $ex)
             {
                 $output->writeln("<error>Failed:</error> " . $ex->getMessage() . ": <info>{$name}</info>");
+                
+                //Если нужно повторить таск и его разрешено повторять в аннотациях
+                if($annotation->retry)
+                {
+                    sleep(3);//Подождём немного, может чуть погодя таск нормально пройдёт
 
-                $job->sendFail();
+                    $this->getContainer()->get('cimus.gearman')->doBackground($job->functionName(), unserialize($job->workload()));
+                }
+                else
+                {
+                    throw $ex;
+                }
+
                 return false;
             }
         });

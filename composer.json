@@ -1,7 +1,7 @@
 {
-    "name" : "cimus/gearman-bundle",
+    "name" : "cimus/gearmanBundle",
     "description" : "Symfony CimusGearmanBundle",
-    "version" : "1.0.0",
+    "version" : "0.1",
     "type" : "symfony-bundle",
     "homepage": "https://github.com/Cimus/gearman-bundle",
     "license" : "MIT",

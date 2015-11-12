@@ -9,3 +9,7 @@ services:
         calls:
             - [ addServers, [%cimus.gearman.servers%] ]
         scope: prototype
+        
+    cimus.gearman:
+        class: Cimus\GearmanBundle\Services\GearmanClient
+        arguments: [@cimus.gearman.client]

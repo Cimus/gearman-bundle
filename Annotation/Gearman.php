@@ -12,4 +12,11 @@ final class Gearman
      * @var string
      */
     public $name;
+    
+    /**
+     * @var string
+     */
+    public $description;
+    
+    public $retry = false;
 }
