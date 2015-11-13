@@ -11,13 +11,32 @@ use Symfony\Component\DependencyInjection\ContainerAware;
  */
 abstract class Worker extends ContainerAware 
 {
+    
+    public function init()
+    {
+        
+    }
+
+
+
+
+
+
     protected function getWorkload(\GearmanJob $job)
     {
         return unserialize($job->workload());
     }
     
-    
-    
+    /**
+     * 
+     * @return \Symfony\Component\EventDispatcher\EventDispatcher
+     */
+    protected function getDispatcher()
+    {
+        return $this->container->get('event_dispatcher');
+    }
+
+
     /**
      * @return \Doctrine\Bundle\DoctrineBundle\Registry
      * @throws LogicException If DoctrineBundle is not available

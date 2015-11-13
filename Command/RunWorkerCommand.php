@@ -214,6 +214,8 @@ class RunWorkerCommand extends ContainerAwareCommand
     {
         $output->writeln(sprintf('<info>Registered worker %s</info>', $workerName));
         
+        $worker->init();
+        
         $annotationReader = $this->getContainer()->get('annotation_reader');
         
         $reflection = new \ReflectionObject($worker);
