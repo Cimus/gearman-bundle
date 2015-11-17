@@ -42,33 +42,25 @@ EOF
         $adapter = new GearmanTelnetMonitor($this->getGearmanServers());
         $watch = $input->getOption('watch');
         $once = true;
-        $table = new Table($output);
         while($once || $watch)
         {
             $status = $adapter->status();
+            
             foreach($status as $server => $queues)
             {
                 
                 $output->writeln("<info>Status for Server {$server}</info>");
                 $output->writeln("");
-                if($this->getHelperSet()->has('table'))
-                {
-                    $table = new Table($output);
-                    $table
-                            ->setHeaders(['Queue', 'Jobs', 'Workers working', 'Workers total'])
-                            ->setRows($queues);
-                    $table->render($output);
-                }
-                else
-                {
-                    foreach($queues as $queue)
-                    {
-                        $str = "    <comment>{$queue['name']}</comment> Jobs: {$queue['queue']}";
-                        $str .= " Workers: {$queue['running']} / {$queue['workers']}";
-                        $output->writeln($str);
-                    }
-                }
+
+                $table = new Table($output);
+                $table
+                        ->setHeaders(['Queue', 'Jobs', 'Workers working', 'Workers total', 'Errors'])
+                        ->setRows($queues);
+                $table->render($output);
+                
             }
+            $output->writeln("");
+            $output->writeln("");
             
             $once = false;
             if($watch)
