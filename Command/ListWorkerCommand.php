@@ -76,8 +76,7 @@ EOF
             throw new \InvalidArgumentException('Could not find workers');
         }
         
-        $annotationReader = $this->getContainer()->get('annotation_reader');
-        
+        $annotationReader = $this->getAnnotationReader();
         
         $jobs = [];
         
@@ -113,6 +112,15 @@ EOF
                 ->setRows($jobs);
         $table->render($output);
         
+    }
+    
+    
+    /**
+     * @return \Doctrine\Common\Annotations\FileCacheReader
+     */
+    private function getAnnotationReader()
+    {
+        return $this->getContainer()->get('annotation_reader');
     }
     
 }

@@ -6,7 +6,7 @@ namespace Cimus\GearmanBundle\Annotation;
  *
  * @author Sergey Ageev (Cimus <s_ageev@mail.ru>)
  */
-final class Gearman
+final class Gearman implements \Doctrine\ORM\Mapping\Annotation
 {
     /**
      * @var string
