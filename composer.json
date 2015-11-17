@@ -1,5 +1,5 @@
 {
-    "name" : "cimus/gearmanBundle",
+    "name" : "cimus/gearman-bundle",
     "description" : "Symfony CimusGearmanBundle",
     "version" : "1.0.0",
     "type" : "symfony-bundle",
