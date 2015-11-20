@@ -66,17 +66,9 @@ abstract class Worker extends ContainerAware
     
     
     
-    /**
-     * 
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected function getVertica()
-    {
-        return $this->getDoctrine()->getManager('vertica');
-    }
+
 
     
-
     /**
      * @param string $id
      * @return boolean
@@ -104,7 +96,7 @@ abstract class Worker extends ContainerAware
      */
     protected function getGearmanClient()
     {
-        return $this->getContainer()->get('cimus.gearman');
+        return $this->container->get('cimus.gearman');
     }
     
     
