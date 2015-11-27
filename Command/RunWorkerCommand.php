@@ -248,8 +248,9 @@ class RunWorkerCommand extends ContainerAwareCommand
      */
     private function registerJob($name, $metod, Worker $worker, GearmanWorker $gmWorker, OutputInterface $output, \Cimus\GearmanBundle\Annotation\Gearman $annotation)
     {
-        $gmWorker->addFunction($name, function (GearmanJob $job) use ($name, $metod, $worker, $output, $annotation){
-            
+        $gearman = $this->getContainer()->get('cimus.gearman'); 
+        $gmWorker->addFunction($name, function (GearmanJob $job) use ($name, $metod, $worker, $output, $annotation, $gearman){
+           
             try {
                 $result = call_user_func_array([$worker, $metod ], [$job, $output]);
                 $job->sendComplete($result);
@@ -264,7 +265,7 @@ class RunWorkerCommand extends ContainerAwareCommand
                 {
                     sleep(3);//Подождём немного, может чуть погодя таск нормально пройдёт
 
-                    $this->getContainer()->get('cimus.gearman')->doBackground($job->functionName(), unserialize($job->workload()));
+                    $gearman->doBackground($job->functionName(), unserialize($job->workload()));
                 }
                 else
                 {
