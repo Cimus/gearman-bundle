@@ -51,24 +51,7 @@ abstract class Worker extends ContainerAware
     
     
     
-    /**
-     * 
-     * @param type $counterId
-     * @return \K50\TrackerBundle\Entity\Counter
-     */
-    protected function getCounterById($counterId)
-    {
-        return $this
-                ->getDoctrine()
-                ->getRepository('K50TrackerBundle:Counter')
-                ->findByCounterIdSingle($counterId);
-    }
-    
-    
-    
 
-
-    
     /**
      * @param string $id
      * @return boolean
