@@ -160,7 +160,7 @@ class GearmanClient
         return $this->gearmanClient->returnCode();
     }
 
-        protected function setJob($name, $params, $unique, $method)
+    protected function setJob($name, $params, $unique, $method)
     {
         $params = serialize($params);
         $unique = $this->generateUniqueKey($name, $params, $unique, $method);
@@ -169,8 +169,38 @@ class GearmanClient
         return $this->gearmanClient->$method($name,$params,$unique);
     }
 
+    public function addTask($name, $params = '', &$context = null, $unique = null)
+    {
+        $method = self::GEARMAN_METHOD_ADDTASK;
+        $params = serialize($params);
+        $contextReference = array('context' => &$context);
+        $unique = $this->generateUniqueKey($name, $params, $unique, $method);
+
+        $this->gearmanClient->addTask($name, $params, $contextReference, $unique);
+        
+        return $unique;
+    }
     
+    public function runTasks()
+    {
+        return $this->gearmanClient->runTasks();
+    }
+
     
+
+
+
+
+    public function setCompleteCallback(callable $callback )
+    {
+        return $this->gearmanClient->setCompleteCallback($callback);       
+    }
+
+
+
+
+
+
 
 //    protected function createTask($name, $params, $unique, $method)
 //    {
