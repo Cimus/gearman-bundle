@@ -2,15 +2,16 @@
 namespace Cimus\GearmanBundle;
 
 use LogicException;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Базовый класс для воркеров
  *
  * @author Sergey Ageev (Cimus <s_ageev@mail.ru>)
  */
-abstract class Worker extends ContainerAware 
+abstract class Worker
 {
+    use ContainerAwareTrait;
     
     public function init()
     {
