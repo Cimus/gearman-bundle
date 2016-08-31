@@ -2,14 +2,14 @@ services:
     cimus.gearman.client:
         class: GearmanClient
         calls:
-            - [ addServers, [%cimus.gearman.servers%] ]
+            - [ addServers, ["%cimus.gearman.servers%"] ]
             
     cimus.gearman.worker:
         class: GearmanWorker
         calls:
-            - [ addServers, [%cimus.gearman.servers%] ]
+            - [ addServers, ["%cimus.gearman.servers%"] ]
         scope: prototype
         
     cimus.gearman:
         class: Cimus\GearmanBundle\Services\GearmanClient
-        arguments: [@cimus.gearman.client]
+        arguments: ["@cimus.gearman.client"]
