@@ -181,6 +181,19 @@ class GearmanClient
         return $unique;
     }
     
+    public function addTaskBackground($name, $params = '', &$context = null, $unique = null)
+    {
+        $method = self::GEARMAN_METHOD_ADDTASKBACKGROUND;
+        $params = serialize($params);
+        $contextReference = array('context' => &$context);
+        $unique = $this->generateUniqueKey($name, $params, $unique, $method);
+
+        $this->gearmanClient->addTaskBackground($name, $params, $contextReference, $unique);
+        
+        return $unique;
+    }
+    
+    
     public function runTasks()
     {
         return $this->gearmanClient->runTasks();
