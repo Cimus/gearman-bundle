@@ -141,15 +141,24 @@ class GearmanClient
      * @param string $name
      * @param mixed $params
      * @param null|string $unique
-     * @return \Cimus\GearmanBundle\Services\GearmanClient
+     * @return handle
      */
     public function doBackground($name, $params = '', $unique = null)
     {
-        $this->setJob($name, $params, $unique, self::GEARMAN_METHOD_DOBACKGROUND);
-        return $this;
+        return $this->setJob($name, $params, $unique, self::GEARMAN_METHOD_DOBACKGROUND);
     }
     
     /**
+     * 
+     * @param handle $job_handle
+     * @return array
+     */
+    public function jobStatus($job_handle)
+    {
+        return $this->gearmanClient->jobStatus($job_handle);
+    }
+
+        /**
      * Get the last Gearman return code
      *
      * @return int
@@ -250,5 +259,6 @@ class GearmanClient
 //        
 //        $this->tasks = [];
 //    }
+    
     
 }
